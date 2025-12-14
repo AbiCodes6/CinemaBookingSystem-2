@@ -1,0 +1,104 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class CinemaBookingSystem {
+
+    private static ArrayList<String> bookedSeats = new ArrayList<>();
+    private static final int TOTAL_SEATS = 10;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n===== 🎬 CINEMA SEAT BOOKING SYSTEM =====");
+            System.out.println("1. View Available Seats");
+            System.out.println("2. Book a Seat");
+            System.out.println("3. Cancel Booking");
+            System.out.println("4. View All Booked Seats");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    viewAvailableSeats();
+                    break;
+                case 2:
+                    bookSeat(sc);
+                    break;
+                case 3:
+                    cancelBooking(sc);
+                    break;
+                case 4:
+                    viewBookedSeats();
+                    break;
+                case 5:
+                    System.out.println("Thank you for using the Cinema Booking System! 🎟");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+
+        } while (choice != 5);
+
+        sc.close();
+    }
+
+    private static void viewAvailableSeats() {
+        System.out.println("\nAvailable Seats:");
+        for (int i = 1; i <= TOTAL_SEATS; i++) {
+            String seat = "Seat" + i;
+            if (!bookedSeats.contains(seat)) {
+                System.out.print(seat + " ");
+            }
+        }
+        System.out.println();
+    }
+
+    private static void bookSeat(Scanner sc) {
+        System.out.print("\nEnter seat number to book (1-" + TOTAL_SEATS + "): ");
+        int seatNumber = sc.nextInt();
+        sc.nextLine();
+
+        if (seatNumber < 1 || seatNumber > TOTAL_SEATS) {
+            System.out.println("❌ Invalid seat number!");
+            return;
+        }
+
+        String seat = "Seat" + seatNumber;
+        if (bookedSeats.contains(seat)) {
+            System.out.println("⚠ Seat already booked!");
+        } else {
+            bookedSeats.add(seat);
+            System.out.println("✅ " + seat + " has been successfully booked!");
+        }
+    }
+
+    private static void cancelBooking(Scanner sc) {
+        System.out.print("\nEnter seat number to cancel booking (1-" + TOTAL_SEATS + "): ");
+        int seatNumber = sc.nextInt();
+        sc.nextLine();
+
+        String seat = "Seat" + seatNumber;
+        if (bookedSeats.contains(seat)) {
+            bookedSeats.remove(seat);
+            System.out.println("🟢 Booking for " + seat + " has been cancelled.");
+        } else {
+            System.out.println("⚠ No booking found for " + seat + ".");
+        }
+    }
+
+    private static void viewBookedSeats() {
+        System.out.println("\nBooked Seats:");
+        if (bookedSeats.isEmpty()) {
+            System.out.println("No seats booked yet.");
+        } else {
+            for (String seat : bookedSeats) {
+                System.out.print(seat + " ");
+            }
+            System.out.println();
+        }
+    }
+}
